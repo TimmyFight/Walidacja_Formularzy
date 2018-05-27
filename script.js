@@ -68,7 +68,7 @@ const validateForm = (function() {
     
     const testInputCheckbox = function(input) {
         const name = input.getAttribute('name');
-        const group = input.form.querySelectorAll(':scope iput[name="'+name+'"]:checked');
+        const group = input.form.querySelectorAll(':scope input[name="'+name+'"]:checked');
     
         if(group.length) {
             showFieldValidation(input, true);
@@ -104,7 +104,7 @@ const prepareElements = function() {
                 element.addEventListener('click', function() {testInputCheckbox(element)});
             }
             if (type == 'RADIO') {
-                element.addEventListener('click', function() {testInputRadio(element)});
+                element.addEventListener('click', function() {testInputCheckbox(element)});
             }
         }
       if (element.nodeName.toUpperCase() == 'TEXTAREA'){
@@ -118,23 +118,75 @@ const prepareElements = function() {
     });
 };
 
-//metoda publiczna 
+//Sprawdzanie formularza przy wysyłaniu
+
+const formSubmit = function(){
+    options.form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        let validated = true;
+
+        //Pobieranie wszystkich pól z required
+        const elements = options.form.querySelectorAll(':scope [required]');
+
+        [].forEach.call(elements, function(element) {
+            if (element.nodeName.toUpperCase() == 'INPUT'){
+            const type = element.type.toUpperCase();
+            if (type == 'EMAIL') {
+                if (!testInputEmail(element)) validated = false; 
+            }
+
+            if (type == 'URL') {
+                if(!testInputURL(element)) validated = false;
+            }
+
+            if (type == 'TEXT') {
+                if(!testInputText(element)) validated = false;
+            }
+
+            if (type == 'CHECKBOX') {
+                if(!testInputCheckbox(element)) validated = false;
+            }
+
+            if (type == 'RADIO') {
+                if(!testInputCheckbox(element)) validated = false;
+            }
+        }
+        if (element.nodeName.toUpperCase() == 'TEXTAREA') {
+            if(!testInputText(element)) validated = false;
+        }
+
+        if (element.nodeName.toUpperCase() == 'SELECT') {
+            if(!testInputSelect(element)) validated = false;
+        }
+        });
+
+        if (validated) {
+            this.submit();
+        } else {
+            return false;
+        }
+    });
+}
+
 const init = function(_options) {
-    //do modułu będziemy przekazywać opcje
-    //przekazane ustawimy w zmiennej options modułu, lub ustawimy domyślne
+    //Do modułu będziemy przekazywać opcje
     options = {
-        form : _options.form || null,
+        form : _options.form || null, 
         classError : _options.classError || 'error'
     }
-    if (options.form == null || options.form == undefined || options.form.length == 0){
+    //Jeśli nie przekazaliśmy formularza
+    if (options.form == null || options.form == undefined || options.form/length == 0){
         console.warn('validateForm: Źle przekazany formularz');
-        return false;
+        return false; 
     }
-    //ustawiamy dla form novalidate - dzięki temu nie będzie domyślnych dymków walidacji dla pól required
+
+    //Wyłączenie domyślnych dymków walidacji 
     options.form.setAttribute('novalidate', 'novalidate');
 
     prepareElements();
-}
+    formSubmit();
+};
 
 return {
     init : init
