@@ -1,3 +1,11 @@
+body{
+    margin: 0;
+    color: #5d5d5d;
+    background: #fff;
+    font-family: "Open Sans",sans-serif;
+    line-height: 1.8em;
+}
+
 .form .error {
     color:#DB083E;
 }
@@ -23,4 +31,63 @@
 .form .error select {
     background-image: none;
     padding-right:4px;
+}
+
+.form { 
+    width: 50%;
+    border-radius: 2px;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin: 2rem auto;
+    background: #eee;
+}
+
+.form label {
+    font-size: .9rem;
+    display: block;
+    margin: 0 0 .5rem;
+    line-height: 1.5rem;
+}
+
+.form input[type=email], .form input[type=text], .form input[type=url], .form select, .form textarea {
+    display: block;
+    width: 100%;
+    border-radius: 2px;
+    line-height: 36px;
+    font-family: sans-serif;
+    box-sizing: border-box;
+    padding: 0 10px;
+    border: 1px solid #ddd;
+}
+
+.button:hover {
+    background: #a60e0e;
+    color: #fff;
+}
+
+.button {
+    margin-top: 20px;
+    padding: .8em 3em;
+    background: #f15c5c;
+    color: #fff;
+    border: 0;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 700;
+    border-radius: .2rem;
+    transition: .5s background-color,.5s box-shadow;
+    cursor: pointer;
+}
+
+.form fieldset {
+    border: 0;
+    padding: 0;
+}
+
+.form select:not([multiple]) {
+    height: 36px;
+}
+
+.form select {
+    padding: 4px 4px 4px 10px;
 }
